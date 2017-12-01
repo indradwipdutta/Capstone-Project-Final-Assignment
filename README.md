@@ -60,15 +60,19 @@ Code Function 'dsGrams.R' is called from 'Read_CollectTokens.R' to create databa
 
 ```{r Read Data Text Files and Call NGram generating function,eval=FALSE,echo=TRUE}
 ##load libraries
+
 library(tm);library(XML);library(dplyr);library(wordcloud);
 library(RColorBrewer);library(caret);library(NLP);library(openNLP);
 library(RWeka);library(qdap);library(ggplot2);library(stringi);
 library(stringr);library(magrittr);library(SnowballC);
 library(textcat)
+
 ##Read Datasets and close connections
+
 ds.blogs <- readLines(unz("./Coursera-SwiftKey.zip", "final/en_US/en_US.blogs.txt"))
 ds.news <- readLines(unz("./Coursera-SwiftKey.zip", "final/en_US/en_US.news.txt"))
 ds.twitter <- readLines(unz("./Coursera-SwiftKey.zip", "final/en_US/en_US.twitter.txt"))
+
 ##Call the NGram generating "function dsGram.R".It Generates the database "NGram.RData"
 source("dsGram.R")
 dsGram(ds.blogs,ds.news,ds.twitter,5,1000) 
@@ -101,4 +105,4 @@ dsGram<-function(ds1,ds2,ds3,No.of.Samples=10,Size.Sample=1000) {
     sampCombined <- c(Sample.ds1,Sample.ds2,Sample.ds3) 
 ```
 The Dataset names are passed to this function and also the number of times to sample the huge datasets in parts of sample size,say 1000 lines,without replacement back of the lines to original dataset.
-The final NGram.RData size can be controlled by calling this 'dsGram.R' code from 'Read_CollectTokens.R' and varying the values of No.of.Samples=10,Size.Sample=1000 in the function call.
+The final NGram.RData size can be controlled by calling this 'dsGram.R' code from 'Read_CollectTokens.R' and varying the values of No.of.Samples=10,Size.Sample=1000 in the function call.The larger MB size of the NGram.RData would mean better accuracy of the model,but for this assignment,it has been kept small,so that it can be hosted in Shiny Apps io web server,with a free account.
