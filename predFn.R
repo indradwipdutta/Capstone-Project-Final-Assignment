@@ -17,17 +17,25 @@ library(textcat)
 
 #load("Ngrams.RData")
 
-predFn<-function(userInput){
+predFn<-function(userInput="type in here"){
+
+###############PROCESS USER INPUT############
+  userInput <- gsub("#\\S+", "", userInput)
+  userInput <- tolower(userInput)
+  userInput <- removeNumbers(userInput)
+  userInput <- removePunctuation(userInput)
+  userInput <- stripWhitespace(userInput)
+  userInput <- gsub(paste(" ","$",sep = ""), "", userInput)
   
-  #Regex_Ip<-gsub(" ","",paste("^",userInput))
-  #Regex_Ip<-paste("^",paste(userInput," "),sep = "")
-  #Regex_Ip<-paste("^",userInput,sep = "")
+  userInput <- userInput[which(userInput!="")]
+  # userInput <- gsub("\\brt\\b", "", userInput)
+   
   
-  #Filter.userInpuserut<-grepl(Regex_Ip,gram1$Words)
+
+##########################x######################x######  
   predwords<-data.frame()
   ln<-word_count(userInput)
-  
-  
+
   
  ############### 
   if (ln>4){
@@ -43,7 +51,7 @@ predFn<-function(userInput){
   if (ln==4){
     
     userInput.gram4<-gram4[gram4$Words==userInput,]
-    Filter.userInput.gram5<-grepl(paste("^",userInput,sep = ""),gram5$Words)
+    Filter.userInput.gram5<-grepl(paste("^",userInput," ",sep = ""),gram5$Words)
     predwords<-gram5[Filter.userInput.gram5,]
     predwords$Words<-as.character(predwords$Words)
     
@@ -71,7 +79,7 @@ predFn<-function(userInput){
   if (ln==3){
     
     userInput.gram3<-gram3[gram3$Words==userInput,]
-    Filter.userInput.gram4<-grepl(paste("^",userInput,sep = ""),gram4$Words)
+    Filter.userInput.gram4<-grepl(paste("^",userInput," ",sep = ""),gram4$Words)
     predwords<-gram4[Filter.userInput.gram4,]
     predwords$Words<-as.character(predwords$Words)
     
@@ -96,7 +104,7 @@ predFn<-function(userInput){
   if (ln==2){
     
     userInput.gram2<-gram2[gram2$Words==userInput,]
-    Filter.userInput.gram3<-grepl(paste("^",userInput,sep = ""),gram3$Words)
+    Filter.userInput.gram3<-grepl(paste("^",userInput," ",sep = ""),gram3$Words)
     predwords<-gram3[Filter.userInput.gram3,]
     predwords$Words<-as.character(predwords$Words)
     

@@ -13,46 +13,23 @@ library(gridExtra)
 library(caret)
 library(randomForest)
 
-# Define server logic required to draw a histogram
-shinyServer(function(input, output) {
-   
-  #source("TestDatasetReadTxtFile.R")
-  
-   #source("TestDatasetSummary.R")
-  
-  #output$NGrams <- renderDataTable(head(gram_1),options = list(pageLength = 5) )
-  #output$No_of_Suggestions<-renderText(length(gram_1$Words))
-  
-  #ChickParam<-reactive({
-    
-    #data.frame(Time=input$time,Chick=input$ChikType,Diet=input$dietType) 
-    
-  #})
-  
-  #output$QuestionChick<-renderDataTable(ChickParam())
-  
+server <- shinyServer(function(input, output,session) {
+ 
   
   Inputwords<-reactive({
     
-    predFn(input$user.Input)
-                       
-    })
+              predFn(input$user.Input)
+              #predFn(userText())
+              })
+ 
   
+
+   observe({  
+     
+     if(input$user.Input !=""){  
+     
+  output$Pred.Output<- renderDataTable(data.frame(suggested=Inputwords()),options = list(pageLength = 4))
   
-  #output$Preds<- renderDataTable(data.frame(suggested=head(Inputwords(),5)),options = list(dom="t"))
-  
-  output$Pred.Output<- renderDataTable(data.frame(suggested=Inputwords()))
-  
-  
-  
-  #output$SuggestionsList<-eventReactive(input$test,{print("hi")})
-  #predLastWord<-strsplit(head(as.character(Inputwords()$Words)))
-  #output$pred.word1<-renderText(head(as.character(Inputwords()$Words))[1])
-  #output$pred.word2<-renderText(head(as.character(Inputwords()$Words))[2])
-  #output$pred.word3<-renderText(head(as.character(Inputwords()$Words))[3])
-  #output$pred.word4<-renderText(head(as.character(Inputwords()$Words))[4])
-  #output$pred.word5<-renderText(head(as.character(Inputwords()$Words))[5])
-  #output$pred.word6<-renderText(head(as.character(Inputwords()$Words))[6])
   
   output$pred.word1<-renderText(strsplit(head(as.character(Inputwords()$Words))[1]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[1])])
   output$pred.word2<-renderText(strsplit(head(as.character(Inputwords()$Words))[2]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[2])])
@@ -60,41 +37,87 @@ shinyServer(function(input, output) {
   output$pred.word4<-renderText(strsplit(head(as.character(Inputwords()$Words))[4]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[4])])
   output$pred.word5<-renderText(strsplit(head(as.character(Inputwords()$Words))[5]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[5])])
   output$pred.word6<-renderText(strsplit(head(as.character(Inputwords()$Words))[6]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[6])])
+   }
+  else
+  {
+    updateTextInput(session,"user.Input",value="type in something at least")}
+    })
   
   
   
+  output$Gram1.summary<-renderText(length(gram1$Words))
+  output$Gram2.summary<-renderText(length(gram2$Words))
+  output$Gram3.summary<-renderText(length(gram3$Words))
+  output$Gram4.summary<-renderText(length(gram4$Words))
+  output$Gram5.summary<-renderText(length(gram5$Words))
+ 
   
-  # observeEvent(input$testButton,
-  #              
-  #   {isolate({updateTextinput("user.Input.test",value=output$pred.word1)})
-  #                
-  #                
-  #                })
-    
-  observeEvent(input$testButton,
-               
-               {updateTextinput("user.Input.test",value=output$pred.word1)})
-                 
-                 
-               
+   
+   observeEvent(input$sel.pred.word1,
+                
+                {
+                  splitWord<-strsplit(head(as.character(Inputwords()$Words))[1]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[1])]
+                  updateTextInput(session,"user.Input",value=paste(input$user.Input,splitWord))
+                }) 
+   
+   
+   observeEvent(input$sel.pred.word2,
+                
+                {
+                  splitWord<-strsplit(head(as.character(Inputwords()$Words))[2]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[1])]
+                  updateTextInput(session,"user.Input",value=paste(input$user.Input,splitWord))
+                })  
+   
   
-  #observeEvent(input$Preds, {str(input$text_Input)})
-  #observeEvent(input$Preds_rows_selected,{str(input$text_Input) <- input$Preds_selected_id})
-  
-  #observeEvent(output$Preds_rows_selected,{updateTextInput(session,"text_Input",value=output$Preds_rows_selected)})
-  #input$text_Input<-observeEvent(input$Preds_rows_selected,{ input$Preds_rows_selected}) 
-  #observeEvent(output$Preds_rows_selected,{renderText("text_Pred",value=output$Preds_rows_selected)})
-  
-  #observe({
-    
-    #isolate({ updateTextInput(session,"text_Input",value=output$Preds_rows_selected)})
-     # })
-  
-  output$Gram1<- renderDataTable(head(gram1,5),options = list(dom="t"))
-  output$Gram2<- renderDataTable(head(gram2,5),options = list(dom="t"))
-  output$Gram3<- renderDataTable(head(gram3,5),options = list(dom="t"))
-  output$Gram4<- renderDataTable(head(gram4,5),options = list(dom="t"))
-  output$Gram5<- renderDataTable(head(gram5,5),options = list(dom="t"))
+   
+   observeEvent(input$sel.pred.word3,
+                
+                {
+                  splitWord<-strsplit(head(as.character(Inputwords()$Words))[3]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[1])]
+                  updateTextInput(session,"user.Input",value=paste(input$user.Input,splitWord))
+                })  
+   
+   
+   
+   observeEvent(input$sel.pred.word4,
+                
+                {
+                  splitWord<-strsplit(head(as.character(Inputwords()$Words))[4]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[1])]
+                  updateTextInput(session,"user.Input",value=paste(input$user.Input,splitWord))
+                }) 
+   
+   
+   
+   
+   observeEvent(input$sel.pred.word5,
+                
+                {
+                  splitWord<-strsplit(head(as.character(Inputwords()$Words))[5]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[1])]
+                  updateTextInput(session,"user.Input",value=paste(input$user.Input,splitWord))
+                }) 
+   
+   
+   
+   
+   observeEvent(input$sel.pred.word6,
+                
+                {
+                  splitWord<-strsplit(head(as.character(Inputwords()$Words))[6]," ")[[1]][word_count(head(as.character(Inputwords()$Words))[1])]
+                  updateTextInput(session,"user.Input",value=paste(input$user.Input,splitWord))
+                }) 
+   
+   
+  output$Gram1<- renderDataTable(head(gram1,10),options = list(dom="t"))
+  output$Gram2<- renderDataTable(head(gram2,9),options = list(dom="t"))
+  output$Gram3<- renderDataTable(head(gram3,8),options = list(dom="t"))
+  output$Gram4<- renderDataTable(head(gram4,10),options = list(dom="t"))
+  output$Gram5<- renderDataTable(head(gram5,9),options = list(dom="t"))
 
   
+  
   })
+
+#shinyApp(ui = ui, server = server)
+
+
+

@@ -16,5 +16,5 @@ library(magrittr)
 library(SnowballC)
 library(textcat)
 
-load("Ngrams.RData")
+load("NGrams.RData")
 source("predFn.R")
