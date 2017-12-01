@@ -45,5 +45,5 @@ close.connection(unz("./Coursera-SwiftKey.zip", "final/en_US/en_US.twitter.txt")
 
 source("dsGram.R")
 #dsGram<-function(ds1,ds2,ds3,No_of_Samples=10,Size_Sample=1000) {
-dsGram(ds.blogs,ds.news,ds.twitter,5,500)  
+dsGram(ds.blogs,ds.news,ds.twitter,4,1000)  
 
