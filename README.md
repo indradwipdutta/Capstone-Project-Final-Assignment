@@ -77,4 +77,28 @@ load("NGram.RData")
 ```
 This NGram.RData,which contains the NGrams named,gram1,gram2,gram3,gram4,gram5 are used for the prediction,using conditional probalility  of the words.
 
-### The structure of the "dsGram.R" code function is as below
+### The part structure of the "dsGram.R" code function is as below,the full code is available in this Repo separately
+
+```{r NGram generating function,eval=FALSE,echo=TRUE}
+
+dsGram<-function(ds1,ds2,ds3,No.of.Samples=10,Size.Sample=1000) {
+ 
+    source("NTokenizer.R") 
+  
+  gram1<-data.frame()
+  gram2<-data.frame()
+  gram3<-data.frame()
+  gram4<-data.frame()
+  gram5<-data.frame()
+  
+  for (i in 1:No.of.Samples)
+    
+  {
+    
+    Sample.ds1<- sample(ds1,Size.Sample);ds1<-ds1[!ds1%in%Sample.ds1]
+    Sample.ds2 <- sample(ds2,Size.Sample);ds2<-ds2[!ds2%in%Sample.ds2]
+    Sample.ds3 <- sample(ds3,Size.Sample);ds3<-ds3[!ds1%in%Sample.ds3]
+    sampCombined <- c(Sample.ds1,Sample.ds2,Sample.ds3) 
+```
+The Dataset names are passed to this function and also the number of times to sample the huge datasets in parts of sample size,say 1000 lines,without replacement back of the lines to original dataset.
+The final NGram.RData size can be controlled by calling this 'dsGram.R' code from 'Read_CollectTokens.R' and varying the values of No.of.Samples=10,Size.Sample=1000 in the function call.
