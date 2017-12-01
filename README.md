@@ -1,6 +1,6 @@
 # Coursera DataScience Capstone Slide Deck : Project Predicting the next word of a sentence at a web interface
-author:Indradwip Dutta 
-date: 12/1/2017
+#### author:Indradwip Dutta 
+#### date: 12/1/2017
 ## The Data Product Web App mainly predicts the next word in a sentence,when typed into an user input.
 
 Contents
